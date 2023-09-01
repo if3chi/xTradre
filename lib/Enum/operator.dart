@@ -1,0 +1,1 @@
+enum Operator { multiply, divide }
