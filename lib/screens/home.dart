@@ -17,6 +17,8 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
   final _amountToExchangeController = TextEditingController();
   final _resultController = TextEditingController();
   final _exchangeRateController = TextEditingController();
+
+  var ratesTable = 'xchanges';
   Operator _operatorDropdownValue = Operator.multiply;
 
   late Database _database;
@@ -42,7 +44,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
           version: 1,
           onCreate: (Database db, int version) {
             db.execute('''
-            CREATE TABLE xchanges(
+            CREATE TABLE $ratesTable(
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               currencyPair TEXT,
               amount REAL,
@@ -109,7 +111,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
 
   Future<void> _insertExchangeRate(XchangeRate xchangeRateData) async {
     await _database.insert(
-      'xchanges',
+      ratesTable,
       xchangeRateData.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
@@ -117,7 +119,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
   }
 
   Future<List<XchangeRate>> _getXchangeRates() async {
-    final List<Map<String, dynamic>> maps = await _database.query('xchanges');
+    final List<Map<String, dynamic>> maps = await _database.query(ratesTable);
     return List.generate(maps.length, (i) {
       return XchangeRate.fromMap(maps[i]);
     });
@@ -126,7 +128,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Exchange Rate Recorder')),
+      appBar: AppBar(title: const Text('RateBook')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
