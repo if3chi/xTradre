@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:xtradre/screens/home.dart';
+import 'package:xtradre/Service/db_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DBService.migrate();
+
   runApp(const XTradre());
 }
 

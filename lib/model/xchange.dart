@@ -1,7 +1,7 @@
 import 'package:xtradre/Enum/operator.dart';
 
 class XchangeRate {
-  final int id;
+  final int? id;
   final String currencyPair;
   final double rate;
   final double amount;
@@ -10,7 +10,7 @@ class XchangeRate {
   final DateTime timestamp;
 
   XchangeRate(
-      {required this.id,
+      {this.id,
       required this.currencyPair,
       required this.amount,
       required this.rAmount,

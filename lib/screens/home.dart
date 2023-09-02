@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:xtradre/Enum/operator.dart';
+import 'package:xtradre/Service/xchange_service.dart';
 import 'package:xtradre/model/xchange.dart';
 
 class XchangeRateScreen extends StatefulWidget {
@@ -17,6 +18,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
   final _amountToExchangeController = TextEditingController();
   final _resultController = TextEditingController();
   final _exchangeRateController = TextEditingController();
+  late XchangeService _xchangeService;
 
   var ratesTable = 'xchanges';
   Operator _operatorDropdownValue = Operator.multiply;
@@ -26,59 +28,25 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
   @override
   void initState() {
     super.initState();
-    _initDatabase().then((_) {
-      _getXchangeRates();
-    });
+    _initDatabase();
+
+    _xchangeService = XchangeService(_database);
   }
 
   Future<void> _initDatabase() async {
     var databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'xtradre.db');
 
-    bool exists = await databaseExists(path);
-
-    if (!exists) {
-      try {
-        await openDatabase(
-          path,
-          version: 1,
-          onCreate: (Database db, int version) {
-            db.execute('''
-            CREATE TABLE $ratesTable(
-              id INTEGER PRIMARY KEY AUTOINCREMENT,
-              currencyPair TEXT,
-              amount REAL,
-              rAmount REAL,
-              operator INTEGER,
-              rate REAL,
-              timestamp TEXT
-            )
-          ''');
-          },
-        );
-      } catch (e) {
-        print("Error creating the database: $e");
-      }
-    }
-
     _database = await openDatabase(path);
   }
 
   void _calculateResult() {
-    double result;
     final amountToExchange =
         double.tryParse(_amountToExchangeController.text) ?? 0;
     final exchangeRate = double.tryParse(_exchangeRateController.text) ?? 0;
 
-    if (_operatorDropdownValue == Operator.multiply) {
-      result = amountToExchange * exchangeRate;
-    } else {
-      if (exchangeRate == 0) {
-        result = 0;
-      } else {
-        result = amountToExchange / exchangeRate;
-      }
-    }
+    double result = XchangeService.calculateResult(
+        amountToExchange, exchangeRate, _operatorDropdownValue);
 
     _resultController.text = result.toStringAsFixed(2);
   }
@@ -91,7 +59,6 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
       final exchangeRate = double.parse(_exchangeRateController.text);
 
       final exchangeRateData = XchangeRate(
-        id: 0,
         currencyPair: currencyPair,
         amount: amount,
         rAmount: rAmount,
@@ -100,29 +67,14 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
         timestamp: DateTime.now(),
       );
 
-      await _insertExchangeRate(exchangeRateData);
+      await _xchangeService.insertXchangeRate(exchangeRateData);
+      setState(() {});
 
       _currencyPairController.clear();
       _amountToExchangeController.clear();
       _resultController.clear();
       _exchangeRateController.clear();
     }
-  }
-
-  Future<void> _insertExchangeRate(XchangeRate xchangeRateData) async {
-    await _database.insert(
-      ratesTable,
-      xchangeRateData.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-    setState(() {});
-  }
-
-  Future<List<XchangeRate>> _getXchangeRates() async {
-    final List<Map<String, dynamic>> maps = await _database.query(ratesTable);
-    return List.generate(maps.length, (i) {
-      return XchangeRate.fromMap(maps[i]);
-    });
   }
 
   @override
@@ -202,7 +154,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
               ),
               const SizedBox(height: 16),
               FutureBuilder<List<XchangeRate>>(
-                future: _getXchangeRates(),
+                future: _xchangeService.getXchangeRates(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator();
