@@ -155,6 +155,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
                     final exchangeRates = snapshot.data!;
                     return Expanded(
                       child: ListView.builder(
+                        reverse: true,
                         itemCount: exchangeRates.length,
                         itemBuilder: (context, index) {
                           final rate = exchangeRates[index];
