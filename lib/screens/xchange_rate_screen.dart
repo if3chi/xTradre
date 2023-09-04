@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:xtradre/Core/utils.dart';
 import 'package:xtradre/Enum/operator.dart';
 import 'package:xtradre/model/xchange.dart';
 import 'package:xtradre/Service/xchange_service.dart';
@@ -18,6 +19,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
   final _amountToExchangeController = TextEditingController();
   final _resultController = TextEditingController();
   final _exchangeRateController = TextEditingController();
+  final _dateController = TextEditingController();
 
   late XchangeService _xchangeService;
   Operator _operatorDropdownValue = Operator.multiply;
@@ -46,6 +48,9 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
       final amount = double.parse(_amountToExchangeController.text);
       final rAmount = double.parse(_resultController.text);
       final exchangeRate = double.parse(_exchangeRateController.text);
+      final timestamp = _dateController.text.isEmpty
+          ? DateTime.now()
+          : DateTime.parse(_dateController.text);
 
       final exchangeRateData = Xchange(
         currencyPair: currencyPair,
@@ -53,7 +58,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
         rAmount: rAmount,
         rate: exchangeRate,
         operator: _operatorDropdownValue,
-        timestamp: DateTime.now(),
+        timestamp: timestamp,
       );
 
       await _xchangeService.insertXchangeRate(exchangeRateData);
@@ -63,6 +68,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
       _amountToExchangeController.clear();
       _resultController.clear();
       _exchangeRateController.clear();
+      _dateController.clear();
     }
   }
 
@@ -131,6 +137,34 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
                 ],
               ),
               const SizedBox(height: 16),
+              TextButton(
+                onPressed: () async {
+                  DateTime? selectedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(2101),
+                  );
+
+                  if (selectedDate != null) {
+                    setState(() {
+                      _dateController.text = selectedDate.toLocal().toString();
+                    });
+                  }
+                },
+                child: Row(
+                  children: [
+                    const Text('Date (Optional):'),
+                    const SizedBox(width: 10),
+                    Text(
+                      _dateController.text.isEmpty
+                          ? Utils.displayDate(DateTime.now())
+                          : Utils.displayDate(_dateController.text),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _resultController,
                 readOnly: true,
@@ -161,7 +195,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
                           final rate = exchangeRates[index];
                           return ListTile(
                             isThreeLine: true,
-                            leading: Text(rate.timestamp.toLocal().toString()),
+                            leading: Text(Utils.displayDate(rate.timestamp)),
                             title: Text(rate.currencyPair),
                             subtitle: Text(
                                 'Amount: ${rate.amount.toStringAsFixed(2)} / Result: ${rate.rAmount.toStringAsFixed(2)} @ ${rate.rate.toStringAsFixed(4)}'),
