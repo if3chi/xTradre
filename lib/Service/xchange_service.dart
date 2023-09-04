@@ -1,26 +1,25 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:xtradre/Enum/operator.dart';
-import 'package:xtradre/Service/db_service.dart';
 import 'package:xtradre/model/xchange.dart';
 
 class XchangeService {
   late Database database;
-  final String table = DBService.xRatesTable;
+  final String _table = Xchange.tableName;
 
   XchangeService(this.database);
 
-  Future<void> insertXchangeRate(XchangeRate xchangeRateData) async {
+  Future<void> insertXchangeRate(Xchange xchangeRateData) async {
     await database.insert(
-      table,
+      _table,
       xchangeRateData.toMap(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
-  Future<List<XchangeRate>> getXchangeRates() async {
-    final List<Map<String, dynamic>> maps = await database.query(table);
+  Future<List<Xchange>> getXchangeRates() async {
+    final List<Map<String, dynamic>> maps = await database.query(_table);
     return List.generate(maps.length, (i) {
-      return XchangeRate.fromMap(maps[i]);
+      return Xchange.fromMap(maps[i]);
     });
   }
 

@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:xtradre/screens/home.dart';
-import 'package:xtradre/Service/db_service.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:xtradre/Core/Support/db.dart';
+import 'package:xtradre/screens/xchange_rate_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DBService.migrate();
 
-  runApp(const XTradre());
+  final db = await DBService.init();
+
+  runApp(XTradre(db));
 }
 
 class XTradre extends StatelessWidget {
-  const XTradre({super.key});
+  final Database db;
+
+  const XTradre(this.db, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class XTradre extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const XchangeRateScreen(),
+      home: XchangeRateScreen(db),
     );
   }
 }

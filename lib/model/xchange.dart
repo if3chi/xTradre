@@ -1,6 +1,8 @@
 import 'package:xtradre/Enum/operator.dart';
 
-class XchangeRate {
+class Xchange {
+  static const tableName = "xchanges";
+
   final int? id;
   final String currencyPair;
   final double rate;
@@ -9,7 +11,7 @@ class XchangeRate {
   final Operator operator;
   final DateTime timestamp;
 
-  XchangeRate(
+  Xchange(
       {this.id,
       required this.currencyPair,
       required this.amount,
@@ -30,8 +32,8 @@ class XchangeRate {
     };
   }
 
-  factory XchangeRate.fromMap(Map<String, dynamic> map) {
-    return XchangeRate(
+  factory Xchange.fromMap(Map<String, dynamic> map) {
+    return Xchange(
       id: map['id'],
       currencyPair: map['currencyPair'],
       amount: map['amount'],

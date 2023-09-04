@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import 'package:xtradre/Enum/operator.dart';
-import 'package:xtradre/Service/xchange_service.dart';
 import 'package:xtradre/model/xchange.dart';
+import 'package:xtradre/Service/xchange_service.dart';
 
 class XchangeRateScreen extends StatefulWidget {
-  const XchangeRateScreen({super.key});
+  final Database db;
+  const XchangeRateScreen(this.db, {super.key});
 
   @override
   createState() => _XchangeRateScreenState();
@@ -18,26 +18,15 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
   final _amountToExchangeController = TextEditingController();
   final _resultController = TextEditingController();
   final _exchangeRateController = TextEditingController();
+
   late XchangeService _xchangeService;
-
-  var ratesTable = 'xchanges';
   Operator _operatorDropdownValue = Operator.multiply;
-
-  late Database _database;
 
   @override
   void initState() {
     super.initState();
-    _initDatabase();
 
-    _xchangeService = XchangeService(_database);
-  }
-
-  Future<void> _initDatabase() async {
-    var databasesPath = await getDatabasesPath();
-    String path = join(databasesPath, 'xtradre.db');
-
-    _database = await openDatabase(path);
+    _xchangeService = XchangeService(widget.db);
   }
 
   void _calculateResult() {
@@ -58,7 +47,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
       final rAmount = double.parse(_resultController.text);
       final exchangeRate = double.parse(_exchangeRateController.text);
 
-      final exchangeRateData = XchangeRate(
+      final exchangeRateData = Xchange(
         currencyPair: currencyPair,
         amount: amount,
         rAmount: rAmount,
@@ -153,7 +142,7 @@ class _XchangeRateScreenState extends State<XchangeRateScreen> {
                 child: const Text('Submit'),
               ),
               const SizedBox(height: 16),
-              FutureBuilder<List<XchangeRate>>(
+              FutureBuilder<List<Xchange>>(
                 future: _xchangeService.getXchangeRates(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
