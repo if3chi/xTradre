@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:xtradre/Core/Support/migrations.dart';
+import 'package:xtradre/core/support/migrations.dart';
 
 class DBService {
   static const String database = 'xtradre.db';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:xtradre/Core/utils.dart';
-import 'package:xtradre/Enum/operator.dart';
+import 'package:xtradre/core/utils.dart';
+import 'package:xtradre/enum/operator.dart';
 import 'package:xtradre/model/xchange.dart';
 import 'package:xtradre/Service/xchange_service.dart';
 

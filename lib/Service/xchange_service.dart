@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:xtradre/Enum/operator.dart';
+import 'package:xtradre/enum/operator.dart';
 import 'package:xtradre/model/xchange.dart';
 
 class XchangeService {

@@ -1,4 +1,4 @@
-import 'package:xtradre/Enum/operator.dart';
+import 'package:xtradre/enum/operator.dart';
 
 class Xchange {
   static const tableName = "xchanges";

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:xtradre/Core/Support/db.dart';
+import 'package:xtradre/core/support/db.dart';
 import 'package:xtradre/screens/xchange_rate_screen.dart';
 
 void main() async {
