@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:xtradre/constants/colors.dart';
 import 'package:xtradre/core/support/db.dart';
-import 'package:xtradre/screens/xchange_rate_screen.dart';
+import 'package:xtradre/screens/transfers.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,12 +20,19 @@ class XTradre extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'xTradre',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        fontFamily: 'Poppins',
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: cPrimary,
+          primary: cPrimary,
+          secondary: cPrimary,
+          background: cPrimary,
+        ),
         useMaterial3: true,
       ),
-      home: XchangeRateScreen(db),
+      home: const Transfers(),
     );
   }
 }
