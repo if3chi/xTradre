@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:xtradre/constants/colors.dart';
 import 'package:xtradre/core/support/db.dart';
@@ -19,13 +20,16 @@ class XTradre extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: cSecondary));
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'xTradre',
       theme: ThemeData(
         fontFamily: 'Poppins',
         colorScheme: ColorScheme.fromSeed(
-          seedColor: cPrimary,
+          seedColor: cSecondary,
           primary: cPrimary,
           secondary: cPrimary,
           background: cPrimary,

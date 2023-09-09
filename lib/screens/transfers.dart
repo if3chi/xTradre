@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:xtradre/constants/colors.dart';
 import 'package:xtradre/widgets/head_title.dart';
 import 'package:xtradre/widgets/app_bar_icon.dart';
-import 'package:xtradre/screens/transfers_search_bar.dart';
+import 'package:xtradre/widgets/transfers_search_bar.dart';
 
 class Transfers extends StatelessWidget {
   const Transfers({super.key});

@@ -3,9 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:xtradre/constants/colors.dart';
 
 class TransfersSearchBar extends StatelessWidget {
-  const TransfersSearchBar({
-    super.key,
-  });
+  const TransfersSearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class TransfersSearchBar extends StatelessWidget {
           filled: true,
           fillColor: cSecondary,
           hintText: 'X Tranfers',
-          hintStyle:  const TextStyle(color: cAccent, fontSize: 14),
+          hintStyle: const TextStyle(color: cAccent, fontSize: 14),
           contentPadding: const EdgeInsets.all(15),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
@@ -31,7 +29,7 @@ class TransfersSearchBar extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               child: SvgPicture.asset(
                 'assets/svg/search.svg',
-                color: cAction,
+                colorFilter: const ColorFilter.mode(cAction, BlendMode.srcIn),
                 width: 15,
                 height: 15,
               )),
@@ -52,7 +50,8 @@ class TransfersSearchBar extends StatelessWidget {
                           top: 15, bottom: 15, left: 5, right: 15),
                       child: SvgPicture.asset(
                         'assets/svg/sliders.svg',
-                        color: cAction,
+                        colorFilter:
+                            const ColorFilter.mode(cAction, BlendMode.srcIn),
                         width: 15,
                         height: 15,
                       )),
