@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:xtradre/Service/xchange_service.dart';
 import 'package:xtradre/constants/colors.dart';
-import 'package:xtradre/constants/space.dart';
 import 'package:xtradre/model/xchange.dart';
 import 'package:xtradre/widgets/head_title.dart';
 import 'package:xtradre/widgets/app_bar_icon.dart';
@@ -44,7 +43,6 @@ class _TransferScreenState extends State<TransferScreen> {
                   size: 16,
                   fontWeight: FontWeight.w800),
             ),
-            spaceYsm,
             FutureBuilder<List<Xchange>>(
               future: _xchangeService.getXchangeRates(),
               builder: (context, snapshot) {

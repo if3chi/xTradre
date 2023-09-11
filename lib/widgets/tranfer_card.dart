@@ -71,9 +71,10 @@ class TranferCard extends StatelessWidget {
   Widget getDate(String text, {bool isSameDay = false}) {
     return isSameDay
         ? Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 14.0),
+            padding: const EdgeInsets.only(left: 14.0, top: 8.0),
             child: TextSm(
               text,
+              size: 9,
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.w700,
               color: cAction.withOpacity(0.8),
