@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:xtradre/constants/colors.dart';
+import 'package:xtradre/widgets/svg_icon.dart';
 
 class AppBarIcon extends StatelessWidget {
   final String path;
@@ -23,20 +23,14 @@ class AppBarIcon extends StatelessWidget {
     return GestureDetector(
       onTap: () => tap(),
       child: Container(
-        margin: const EdgeInsets.all(10),
-        alignment: Alignment.center,
-        width: cWidth,
-        decoration: BoxDecoration(
-          color: cLightAccent,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: SvgPicture.asset(
-          path,
-          width: iWidth,
-          height: iHeight,
-          color: cAction,
-        ),
-      ),
+          margin: const EdgeInsets.all(10),
+          alignment: Alignment.center,
+          width: cWidth,
+          decoration: BoxDecoration(
+            color: cLightAccent,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: SvgIcon(path, iWidth: iWidth, iHeight: iHeight)),
     );
   }
 }

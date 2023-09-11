@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:xtradre/constants/colors.dart';
+import 'package:xtradre/widgets/svg_icon.dart';
 
 class TransfersSearchBar extends StatelessWidget {
   const TransfersSearchBar({super.key});
@@ -27,12 +27,7 @@ class TransfersSearchBar extends StatelessWidget {
               borderSide: BorderSide.none),
           prefixIcon: Padding(
               padding: const EdgeInsets.all(15),
-              child: SvgPicture.asset(
-                'assets/svg/search.svg',
-                colorFilter: const ColorFilter.mode(cAction, BlendMode.srcIn),
-                width: 15,
-                height: 15,
-              )),
+              child: SvgIcon('assets/svg/search.svg')),
           suffixIcon: SizedBox(
             width: 100.0,
             child: IntrinsicHeight(
@@ -48,13 +43,7 @@ class TransfersSearchBar extends StatelessWidget {
                   Padding(
                       padding: const EdgeInsets.only(
                           top: 15, bottom: 15, left: 5, right: 15),
-                      child: SvgPicture.asset(
-                        'assets/svg/sliders.svg',
-                        colorFilter:
-                            const ColorFilter.mode(cAction, BlendMode.srcIn),
-                        width: 15,
-                        height: 15,
-                      )),
+                      child: SvgIcon('assets/svg/sliders.svg'))
                 ],
               ),
             ),
