@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:xtradre/constants/colors.dart';
 import 'package:xtradre/core/support/db.dart';
-import 'package:xtradre/screens/transfers.dart';
+import 'package:xtradre/screens/transfer_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +36,7 @@ class XTradre extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const Transfers(),
+      home: TransferScreen(db: db),
     );
   }
 }

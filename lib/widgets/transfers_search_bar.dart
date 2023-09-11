@@ -8,7 +8,7 @@ class TransfersSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 40, left: 20, right: 20),
+      margin: const EdgeInsets.only(top: 40, left: 10, right: 10),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
             color: cSecondary.withOpacity(0.11),
