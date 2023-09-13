@@ -30,6 +30,7 @@ class _TransferScreenState extends State<TransferScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(context),
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
@@ -49,9 +50,9 @@ class _TransferScreenState extends State<TransferScreen> {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator();
                 } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
+                  return ErrText('Error: ${snapshot.error}');
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return const Text('No exchange rate data available.');
+                  return const ErrText('No exchange rate data available.');
                 } else {
                   final exchangeRates = snapshot.data!;
                   return Expanded(
@@ -93,6 +94,20 @@ class _TransferScreenState extends State<TransferScreen> {
       actions: [
         AppBarIcon(path: 'assets/svg/more.svg', tap: () {}, cWidth: 37)
       ],
+    );
+  }
+}
+
+class ErrText extends StatelessWidget {
+  final String text;
+  final double size;
+
+  const ErrText(this.text, {super.key, this.size = 18});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Center(child: TextSm(text, size: size)),
     );
   }
 }

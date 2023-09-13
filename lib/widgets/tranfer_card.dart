@@ -3,6 +3,7 @@ import 'package:xtradre/constants/colors.dart';
 import 'package:xtradre/constants/space.dart';
 import 'package:xtradre/core/utils.dart';
 import 'package:xtradre/model/xchange.dart';
+import 'package:xtradre/widgets/svg_icon.dart';
 
 class TranferCard extends StatelessWidget {
   final Xchange transfer;
@@ -36,11 +37,18 @@ class TranferCard extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextSm(transfer.currencyPair,
-                          size: 16, fontWeight: FontWeight.w400),
+                      Row(
+                        children: [
+                          const SvgIcon('assets/svg/money-swap.svg',
+                              iWidth: 25, iHeight: 25),
+                          spaceXxs,
+                          TextSm(transfer.currencyPair,
+                              size: 16, fontWeight: FontWeight.w500),
+                        ],
+                      ),
                       spaceYxs,
                       TextSm(
-                        'Rate @ ${formatMoney(transfer.rate, fraction: 4)}',
+                        'Rate: ${formatMoney(transfer.rate, fraction: 4)}',
                         fontWeight: FontWeight.w100,
                       ),
                     ],
