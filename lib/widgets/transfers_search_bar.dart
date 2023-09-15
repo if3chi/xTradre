@@ -25,23 +25,23 @@ class TransfersSearchBar extends StatelessWidget {
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
               borderSide: BorderSide.none),
-          prefixIcon: Padding(
-              padding: const EdgeInsets.all(15),
+          prefixIcon: const Padding(
+              padding: EdgeInsets.all(15),
               child: SvgIcon('assets/svg/search.svg')),
-          suffixIcon: SizedBox(
+          suffixIcon: const SizedBox(
             width: 100.0,
             child: IntrinsicHeight(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const VerticalDivider(
+                  VerticalDivider(
                     thickness: 0.4,
                     color: cAction,
                     indent: 10,
                     endIndent: 10,
                   ),
                   Padding(
-                      padding: const EdgeInsets.only(
+                      padding: EdgeInsets.only(
                           top: 15, bottom: 15, left: 5, right: 15),
                       child: SvgIcon('assets/svg/sliders.svg'))
                 ],

@@ -108,7 +108,7 @@ class _XchangeRateFormDialogState extends State<XchangeRateFormDialog> {
                 DateTime? selectedDate = await showDatePicker(
                   context: context,
                   initialDate: _selectedDate,
-                  firstDate: DateTime(2000),
+                  firstDate: DateTime(2020),
                   lastDate: DateTime(2101),
                 );
 
