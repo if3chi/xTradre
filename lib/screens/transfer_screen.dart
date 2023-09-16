@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:xtradre/Service/xchange_service.dart';
-import 'package:xtradre/constants/colors.dart';
+import 'package:xtradre/constants/app_colors.dart';
 import 'package:xtradre/enum/operator.dart';
 import 'package:xtradre/model/xchange.dart';
 import 'package:xtradre/widgets/add_transfers_modal.dart';
@@ -151,8 +151,8 @@ class _TransferScreenState extends State<TransferScreen> {
       label: const Text('Add',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
       icon: const Icon(Icons.add_chart, size: 24, weight: 6),
-      foregroundColor: cPrimary,
-      backgroundColor: cSecondary,
+      foregroundColor: AppColors.cPrimary,
+      backgroundColor: AppColors.cSecondary,
     );
   }
 

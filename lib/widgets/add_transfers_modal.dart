@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xtradre/constants/colors.dart';
+import 'package:xtradre/constants/app_colors.dart';
 import 'package:xtradre/constants/space.dart';
 import 'package:xtradre/core/utils.dart';
 import 'package:xtradre/enum/operator.dart';
@@ -73,7 +73,7 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
                   validator: (value) =>
                       value!.isEmpty ? 'Please enter a currency pair' : null,
                 ),
-                spaceYmd,
+                spaceYsm,
                 TextFormField(
                   controller: _amountToExchangeController,
                   keyboardType:
@@ -84,7 +84,7 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
                   validator: (value) =>
                       value!.isEmpty ? 'Please enter an amount' : null,
                 ),
-                spaceYmd,
+                spaceYsm,
                 TextFormField(
                     controller: _exchangeRateController,
                     keyboardType:
@@ -97,7 +97,7 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
                         : (double.tryParse(value) == null
                             ? 'Invalid exchange rate'
                             : null)),
-                spaceYmd,
+                spaceYsm,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -145,7 +145,7 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
                         }
                       },
                       child: Text(Utils.displayDate(_selectedDate),
-                          style: const TextStyle(color: cAction)),
+                          style: const TextStyle(color: AppColors.cAccent)),
                     ),
                   ],
                 )
@@ -159,7 +159,7 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
               children: [
                 Btn(text: 'Save', fn: _submitForm),
                 spaceYxs,
-                const Btn(text: 'Cancel', bgColor: cPrimary),
+                const Btn(text: 'Cancel', bgColor: AppColors.cPrimary),
               ],
             ),
           )
@@ -179,8 +179,8 @@ class Btn extends StatelessWidget {
     super.key,
     required this.text,
     this.fn,
-    this.fgColor = cAction,
-    this.bgColor = cAccent,
+    this.fgColor = AppColors.cAction,
+    this.bgColor = AppColors.cAccent,
   });
 
   @override

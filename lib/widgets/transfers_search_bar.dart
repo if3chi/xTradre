@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xtradre/constants/colors.dart';
+import 'package:xtradre/constants/app_colors.dart';
 import 'package:xtradre/widgets/svg_icon.dart';
 
 class TransfersSearchBar extends StatelessWidget {
@@ -11,16 +11,16 @@ class TransfersSearchBar extends StatelessWidget {
       margin: const EdgeInsets.only(top: 40, left: 10, right: 10),
       decoration: BoxDecoration(boxShadow: [
         BoxShadow(
-            color: cSecondary.withOpacity(0.11),
+            color: AppColors.cSecondary.withOpacity(0.11),
             blurRadius: 40,
             spreadRadius: 0.0)
       ]),
       child: TextField(
         decoration: InputDecoration(
           filled: true,
-          fillColor: cSecondary,
+          fillColor: AppColors.cSecondary,
           hintText: 'X Tranfers',
-          hintStyle: const TextStyle(color: cAccent, fontSize: 14),
+          hintStyle: TextStyle(color: AppColors.cLightAccent, fontSize: 14),
           contentPadding: const EdgeInsets.all(15),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
@@ -36,7 +36,7 @@ class TransfersSearchBar extends StatelessWidget {
                 children: [
                   VerticalDivider(
                     thickness: 0.4,
-                    color: cAction,
+                    color: AppColors.cAction,
                     indent: 10,
                     endIndent: 10,
                   ),

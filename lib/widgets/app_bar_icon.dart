@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xtradre/constants/colors.dart';
+import 'package:xtradre/constants/app_colors.dart';
 import 'package:xtradre/widgets/svg_icon.dart';
 
 class AppBarIcon extends StatelessWidget {
@@ -27,7 +27,7 @@ class AppBarIcon extends StatelessWidget {
           alignment: Alignment.center,
           width: cWidth,
           decoration: BoxDecoration(
-            color: cLightAccent,
+            color: AppColors.cAccent,
             borderRadius: BorderRadius.circular(10),
           ),
           child: SvgIcon(path, iWidth: iWidth, iHeight: iHeight)),

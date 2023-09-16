@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:xtradre/constants/colors.dart';
+import 'package:xtradre/constants/app_colors.dart';
 import 'package:xtradre/constants/space.dart';
 import 'package:xtradre/core/utils.dart';
 import 'package:xtradre/model/xchange.dart';
@@ -22,7 +22,7 @@ class TranferCard extends StatelessWidget {
           Container(
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
-                  color: cSecondary.withOpacity(0.11),
+                  color: AppColors.cSecondary.withOpacity(0.11),
                   blurRadius: 3,
                   spreadRadius: 5)
             ]),
@@ -30,7 +30,7 @@ class TranferCard extends StatelessWidget {
               onTap: () {},
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
-              tileColor: cLightAccent,
+              tileColor: AppColors.cLightAccent,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -85,7 +85,7 @@ class TranferCard extends StatelessWidget {
               size: 9,
               fontStyle: FontStyle.normal,
               fontWeight: FontWeight.w700,
-              color: cAction.withOpacity(0.8),
+              color: AppColors.cAction.withOpacity(0.8),
             ),
           )
         : const SizedBox();
@@ -104,7 +104,7 @@ class TextSm extends StatelessWidget {
     super.key,
     this.size = 12,
     this.fontStyle = FontStyle.normal,
-    this.color = cAction,
+    this.color = AppColors.cAction,
     this.fontWeight = FontWeight.normal,
   });
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:xtradre/constants/colors.dart';
+import 'package:xtradre/constants/app_colors.dart';
 
 class SvgIcon extends StatelessWidget {
   const SvgIcon(
@@ -22,7 +22,8 @@ class SvgIcon extends StatelessWidget {
       path,
       width: iWidth,
       height: iHeight,
-      colorFilter: color ?? const ColorFilter.mode(cAction, BlendMode.srcIn),
+      colorFilter:
+          color ?? const ColorFilter.mode(AppColors.cAction, BlendMode.srcIn),
     );
   }
 }
