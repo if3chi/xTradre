@@ -5,6 +5,7 @@ import 'package:xtradre/core/utils.dart';
 import 'package:xtradre/enum/operator.dart';
 import 'package:xtradre/widgets/app_text_field.dart';
 import 'package:xtradre/widgets/headers.dart';
+import 'package:xtradre/widgets/svg_icon.dart';
 
 class AddTransfersModal extends StatefulWidget {
   final void Function(String, double, double, DateTime, Operator, String)
@@ -51,8 +52,11 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
       Navigator.of(context).pop();
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-            'Success',
+          content: Center(
+            child: SubHeader(
+              text: 'Transfer Added Successfully.',
+              color: AppColors.cPrimary,
+            ),
           ),
           backgroundColor: Colors.greenAccent,
           elevation: 10,
@@ -80,13 +84,18 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
+                // TODO: fix input resizing on err
+                // TODO: get currency pair api n impl. a dropdown
                 inputField(
-                    controller: _currencyPairController,
-                    text: "Currency pair",
-                    hintText: "e.g., USD/GHS",
-                    keyType: TextInputType.text),
+                  controller: _currencyPairController,
+                  text: "Currency pair",
+                  hintText: "e.g., USD/GHS",
+                  keyType: TextInputType.text,
+                  validator: (value) =>
+                      value!.isEmpty ? 'Please enter the currency pair' : null,
+                ),
                 spaceYxs,
                 inputField(
                   controller: _amountToExchangeController,
@@ -108,6 +117,15 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
                             ? 'Invalid exchange rate'
                             : null)),
                 spaceYxs,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    dropDown(),
+                    spaceXsm,
+                    datePicker(context),
+                  ],
+                ),
+                // spaceYxs,
                 widget.result != null
                     ? SubHeader(
                         text: 'Resulting Amount: ${widget.result}',
@@ -116,7 +134,7 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
                         color: AppColors.cAction.withOpacity(0.9),
                       )
                     : const SizedBox(),
-                spaceYmd,
+                spaceYxs,
                 inputField(
                     controller: _reasonController,
                     text: "Reason",
@@ -124,63 +142,87 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
                     textArea: true,
                     keyType: TextInputType.multiline,
                     maxLines: 3),
-                spaceYsm,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text('Operator:'),
-                    spaceXsm,
-                    DropdownButton<Operator>(
-                      value: _operatorDropdownValue,
-                      items: Operator.values.map((Operator value) {
-                        return DropdownMenuItem<Operator>(
-                          value: value,
-                          child: Text(value == Operator.multiply
-                              ? 'Multiply'
-                              : 'Divide'),
-                        );
-                      }).toList(),
-                      onChanged: (Operator? newValue) {
-                        if (newValue != null) {
-                          setState(() {
-                            _operatorDropdownValue = newValue;
-                            widget.onOperatorChanged(newValue);
-                          });
-                        }
-                      },
-                    ),
-                  ],
-                ),
-                spaceYmd,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text('Date (Optional):'),
-                    TextButton(
-                      onPressed: () async {
-                        DateTime? selectedDate = await showDatePicker(
-                          context: context,
-                          initialDate: _selectedDate,
-                          firstDate: DateTime(2020),
-                          lastDate: DateTime(2101),
-                        );
-
-                        if (selectedDate != null) {
-                          setState(() {
-                            _selectedDate = selectedDate;
-                          });
-                        }
-                      },
-                      child: Text(Utils.displayDate(_selectedDate),
-                          style: const TextStyle(color: AppColors.cAction)),
-                    ),
-                  ],
-                )
               ],
             ),
           ),
           spaceYmd,
           formFooter()
+        ],
+      ),
+    );
+  }
+
+  Row dropDown() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        const SubHeader(text: 'Use:', fontWeight: FontWeight.w500),
+        spaceXsm,
+        DropdownButton<Operator>(
+          borderRadius: BorderRadius.circular(8),
+          iconSize: 32,
+          iconEnabledColor: AppColors.cSecondary,
+          style: const TextStyle(
+              fontSize: 16,
+              color: AppColors.cSecondary,
+              fontWeight: FontWeight.w600),
+          value: _operatorDropdownValue,
+          items: Operator.values.map((Operator value) {
+            return DropdownMenuItem<Operator>(
+              value: value,
+              child: Text(value == Operator.multiply ? 'Multiply' : 'Divide'),
+            );
+          }).toList(),
+          onChanged: (Operator? newValue) {
+            if (newValue != null) {
+              setState(() {
+                _operatorDropdownValue = newValue;
+                widget.onOperatorChanged(newValue);
+              });
+            }
+          },
+        ),
+        spaceXsm,
+      ],
+    );
+  }
+
+  ElevatedButton datePicker(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        DateTime? selectedDate = await showDatePicker(
+          context: context,
+          initialDate: _selectedDate,
+          firstDate: DateTime(2020),
+          lastDate: DateTime(2101),
+        );
+
+        if (selectedDate != null) {
+          setState(() {
+            _selectedDate = selectedDate;
+          });
+        }
+      },
+      style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.all(8.0),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+          backgroundColor: AppColors.cAccent),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SvgIcon(
+            'assets/svg/calendar.svg',
+            iWidth: 20,
+            iHeight: 20,
+            color: ColorFilter.mode(AppColors.cPrimary, BlendMode.srcIn),
+          ),
+          spaceXsm,
+          SubHeader(
+            text: Utils.displayDate(_selectedDate),
+            size: 14,
+            color: AppColors.cPrimary,
+          ),
         ],
       ),
     );

@@ -87,6 +87,7 @@ class _TransferScreenState extends State<TransferScreen> {
                   size: 16,
                   fontWeight: FontWeight.w800),
             ),
+            // TODO: implement group by date
             FutureBuilder<List<Xchange>>(
               future: _xchangeService.getXchangeRates(),
               builder: (context, snapshot) {
