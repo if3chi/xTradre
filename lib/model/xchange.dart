@@ -9,16 +9,19 @@ class Xchange {
   final double amount;
   final double rAmount;
   final Operator operator;
+  final String? reason;
   final DateTime timestamp;
 
-  Xchange(
-      {this.id,
-      required this.currencyPair,
-      required this.amount,
-      required this.rAmount,
-      required this.rate,
-      required this.operator,
-      required this.timestamp});
+  Xchange({
+    this.id,
+    this.reason,
+    required this.currencyPair,
+    required this.amount,
+    required this.rAmount,
+    required this.rate,
+    required this.operator,
+    required this.timestamp,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -28,6 +31,7 @@ class Xchange {
       'rAmount': rAmount,
       'rate': rate,
       'operator': operator.index,
+      'reason': reason,
       'timestamp': timestamp.toIso8601String(),
     };
   }
@@ -40,6 +44,7 @@ class Xchange {
       rAmount: map['rAmount'],
       rate: map['rate'],
       operator: Operator.values[map['operator']],
+      reason: map['reason'],
       timestamp: DateTime.parse(map['timestamp']),
     );
   }

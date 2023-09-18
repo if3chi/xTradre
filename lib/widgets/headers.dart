@@ -27,13 +27,13 @@ class MainHeader extends StatelessWidget {
 
 class SubHeader extends StatelessWidget {
   final double size;
-  final String title;
+  final String text;
   final Color color;
   final FontWeight fontWeight;
 
   const SubHeader(
       {super.key,
-      this.title = 'Xchanges',
+      this.text = 'Xchanges',
       this.size = 14.0,
       this.fontWeight = FontWeight.bold,
       this.color = AppColors.cAction});
@@ -41,7 +41,7 @@ class SubHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      title,
+      text,
       style: TextStyle(color: color, fontSize: size, fontWeight: fontWeight),
     );
   }

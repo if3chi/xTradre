@@ -18,6 +18,7 @@ class XchangeService {
 
   Future<List<Xchange>> getXchangeRates() async {
     final List<Map<String, dynamic>> maps = await database.query(_table);
+
     return List.generate(maps.length, (i) {
       return Xchange.fromMap(maps[i]);
     });

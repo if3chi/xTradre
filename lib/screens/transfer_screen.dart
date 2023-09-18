@@ -20,14 +20,11 @@ class TransferScreen extends StatefulWidget {
 }
 
 class _TransferScreenState extends State<TransferScreen> {
-  // final _formKey = GlobalKey<FormState>();
-  final _currencyPairController = TextEditingController();
+  // Todo: refactor these variable names
   final amountToExchangeController = TextEditingController();
   final _resultController = TextEditingController();
   final exchangeRateController = TextEditingController();
-  // TODO: add sender name, reason.
-  Operator operatorDropdownValue =
-      Operator.multiply; // Initialize it with a default value
+  Operator operatorDropdownValue = Operator.multiply;
   late XchangeService _xchangeService;
 
   @override
@@ -46,23 +43,22 @@ class _TransferScreenState extends State<TransferScreen> {
   }
 
   void submitExchangeRate(String currencyPair, double amountToExchange,
-      double rate, DateTime timestamp, Operator operator) async {
+      double rate, DateTime timestamp, Operator operator, String reason) async {
     final result =
         XchangeService.calculateResult(amountToExchange, rate, operator);
 
     final exchangeRateData = Xchange(
-      currencyPair: currencyPair,
-      amount: amountToExchange,
-      rAmount: result,
-      operator: operator,
-      rate: rate,
-      timestamp: timestamp,
-    );
+        currencyPair: currencyPair,
+        amount: amountToExchange,
+        rAmount: result,
+        operator: operator,
+        rate: rate,
+        timestamp: timestamp,
+        reason: reason);
 
     await _xchangeService.insertXchangeRate(exchangeRateData);
 
     setState(() {
-      _currencyPairController.clear();
       amountToExchangeController.clear();
       _resultController.clear();
       exchangeRateController.clear();

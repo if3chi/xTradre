@@ -3,10 +3,12 @@ import 'package:xtradre/constants/app_colors.dart';
 import 'package:xtradre/constants/space.dart';
 import 'package:xtradre/core/utils.dart';
 import 'package:xtradre/enum/operator.dart';
+import 'package:xtradre/widgets/app_text_field.dart';
 import 'package:xtradre/widgets/headers.dart';
 
 class AddTransfersModal extends StatefulWidget {
-  final void Function(String, double, double, DateTime, Operator) onSubmit;
+  final void Function(String, double, double, DateTime, Operator, String)
+      onSubmit;
   final ValueChanged<String> onAmountChanged;
   final ValueChanged<String> onRateChanged;
   final ValueChanged<Operator> onOperatorChanged;
@@ -26,77 +28,98 @@ class AddTransfersModal extends StatefulWidget {
 }
 
 class _AddTransfersModalState extends State<AddTransfersModal> {
+  final _formKey = GlobalKey<FormState>();
   final _currencyPairController = TextEditingController();
   final _amountToExchangeController = TextEditingController();
-  final _exchangeRateController = TextEditingController();
+  final _xRateController = TextEditingController();
+  final _reasonController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   Operator _operatorDropdownValue = Operator.multiply;
 
   void _submitForm() {
-    final currencyPair = _currencyPairController.text;
-    final amountToExchange = double.parse(_amountToExchangeController.text);
-    final exchangeRate = double.parse(_exchangeRateController.text);
+    if (_formKey.currentState!.validate()) {
+      final currencyPair = _currencyPairController.text;
+      final reason = _reasonController.text;
+      final amountToExchange = double.parse(_amountToExchangeController.text);
+      final exchangeRate = double.parse(_xRateController.text);
 
-    widget.onSubmit(currencyPair, amountToExchange, exchangeRate, _selectedDate,
-        _operatorDropdownValue);
+      widget.onSubmit(currencyPair.toUpperCase(), amountToExchange,
+          exchangeRate, _selectedDate, _operatorDropdownValue, reason);
 
-    Navigator.of(context).pop();
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Success',
+          ),
+          backgroundColor: Colors.greenAccent,
+          elevation: 10,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _currencyPairController.dispose();
+    _amountToExchangeController.dispose();
+    _xRateController.dispose();
+    _reasonController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6.0),
+    return Form(
+      key: _formKey,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 12),
-            child: Column(
-              children: [
-                Center(child: MainHeader(title: "Add Transfer", size: 20)),
-                Divider(thickness: 3),
-              ],
-            ),
-          ),
+          formHeader(),
           Padding(
-            padding:
-                const EdgeInsets.only(top: 14, bottom: 6, left: 12, right: 12),
+            padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                TextFormField(
-                  controller: _currencyPairController,
-                  decoration: const InputDecoration(
-                      labelText: 'Currency Pair (e.g., USD to EUR)'),
-                  validator: (value) =>
-                      value!.isEmpty ? 'Please enter a currency pair' : null,
-                ),
-                spaceYsm,
-                TextFormField(
+                inputField(
+                    controller: _currencyPairController,
+                    text: "Currency pair",
+                    hintText: "e.g., USD/GHS",
+                    keyType: TextInputType.text),
+                spaceYxs,
+                inputField(
                   controller: _amountToExchangeController,
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  decoration:
-                      const InputDecoration(labelText: 'Amount to Exchange'),
+                  text: "Amount",
+                  hintText: '5000',
                   onChanged: widget.onAmountChanged,
                   validator: (value) =>
                       value!.isEmpty ? 'Please enter an amount' : null,
                 ),
-                spaceYsm,
-                TextFormField(
-                    controller: _exchangeRateController,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
-                    decoration:
-                        const InputDecoration(labelText: 'Exchange Rate'),
+                spaceYxs,
+                inputField(
+                    controller: _xRateController,
+                    text: "Rate",
+                    hintText: '0.0123',
                     onChanged: widget.onRateChanged,
                     validator: (value) => value!.isEmpty
                         ? 'Please enter an exchange rate'
                         : (double.tryParse(value) == null
                             ? 'Invalid exchange rate'
                             : null)),
+                spaceYxs,
+                SubHeader(
+                  text: 'Resulting Amount: 12000',
+                  size: 11,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.cAction.withOpacity(0.9),
+                ),
+                spaceYmd,
+                inputField(
+                    controller: _reasonController,
+                    text: "Reason",
+                    hintText: "Transfer to myself...",
+                    textArea: true,
+                    keyType: TextInputType.multiline,
+                    maxLines: 3),
                 spaceYsm,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -145,24 +168,41 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
                         }
                       },
                       child: Text(Utils.displayDate(_selectedDate),
-                          style: const TextStyle(color: AppColors.cAccent)),
+                          style: const TextStyle(color: AppColors.cAction)),
                     ),
                   ],
                 )
               ],
             ),
           ),
-          Container(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Btn(text: 'Save', fn: _submitForm),
-                spaceYxs,
-                const Btn(text: 'Cancel', bgColor: AppColors.cPrimary),
-              ],
-            ),
-          )
+          spaceYmd,
+          formFooter()
+        ],
+      ),
+    );
+  }
+
+  Container formFooter() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Btn(text: 'Save', fn: _submitForm, fgColor: AppColors.cPrimary),
+          spaceYxs,
+          const Btn(text: 'Cancel', bgColor: AppColors.cPrimary),
+        ],
+      ),
+    );
+  }
+
+  Padding formHeader() {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 12),
+      child: Column(
+        children: [
+          Center(child: MainHeader(title: "Add Transfer", size: 20)),
+          Divider(thickness: 3),
         ],
       ),
     );
@@ -193,7 +233,7 @@ class Btn extends StatelessWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0)),
             backgroundColor: bgColor),
-        child: SubHeader(
-            title: text, fontWeight: FontWeight.w600, color: fgColor));
+        child:
+            SubHeader(text: text, fontWeight: FontWeight.w800, color: fgColor));
   }
 }

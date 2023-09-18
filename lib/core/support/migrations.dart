@@ -11,6 +11,7 @@ class Migration {
               rAmount REAL,
               operator INTEGER,
               rate REAL,
+              reason TEXT,
               timestamp TEXT
             )
             ''');
