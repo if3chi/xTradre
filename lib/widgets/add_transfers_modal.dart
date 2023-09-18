@@ -13,9 +13,11 @@ class AddTransfersModal extends StatefulWidget {
   final ValueChanged<String> onRateChanged;
   final ValueChanged<Operator> onOperatorChanged;
   final Operator operator;
+  final double? result;
 
   const AddTransfersModal({
     super.key,
+    this.result,
     required this.onSubmit,
     required this.onAmountChanged,
     required this.onRateChanged,
@@ -106,12 +108,14 @@ class _AddTransfersModalState extends State<AddTransfersModal> {
                             ? 'Invalid exchange rate'
                             : null)),
                 spaceYxs,
-                SubHeader(
-                  text: 'Resulting Amount: 12000',
-                  size: 11,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.cAction.withOpacity(0.9),
-                ),
+                widget.result != null
+                    ? SubHeader(
+                        text: 'Resulting Amount: ${widget.result}',
+                        size: 11,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.cAction.withOpacity(0.9),
+                      )
+                    : const SizedBox(),
                 spaceYmd,
                 inputField(
                     controller: _reasonController,

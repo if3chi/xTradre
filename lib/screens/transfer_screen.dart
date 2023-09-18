@@ -39,7 +39,10 @@ class _TransferScreenState extends State<TransferScreen> {
     final exchangeRate = double.tryParse(exchangeRateController.text) ?? 0;
     double result = XchangeService.calculateResult(
         amountToExchange, exchangeRate, operatorDropdownValue);
+
     _resultController.text = result.toStringAsFixed(2);
+
+    setState(() {});
   }
 
   void submitExchangeRate(String currencyPair, double amountToExchange,
@@ -71,6 +74,7 @@ class _TransferScreenState extends State<TransferScreen> {
       appBar: appBar(context),
       resizeToAvoidBottomInset: false,
       body: Container(
+        color: AppColors.cPrimary,
         padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -138,6 +142,7 @@ class _TransferScreenState extends State<TransferScreen> {
                   calculateResult();
                 }),
                 operator: operatorDropdownValue,
+                result: double.tryParse(_resultController.text),
               ),
             ),
           ),
